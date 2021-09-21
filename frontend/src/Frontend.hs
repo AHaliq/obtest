@@ -19,6 +19,7 @@ import Reflex.Dom.Core
 import Common.Api
 import Common.Route
 
+import Lib (someStr)
 
 -- This runs in a monad that can be run on the client or the server.
 -- To run code in a pure client or pure server context, use one of the
@@ -30,6 +31,7 @@ frontend = Frontend
       elAttr "link" ("href" =: static @"main.css" <> "type" =: "text/css" <> "rel" =: "stylesheet") blank
   , _frontend_body = do
       el "h1" $ text "Welcome to Obelisk!"
+      el "h1" $ text $ T.pack someStr
       el "p" $ text $ T.pack commonStuff
       
       -- `prerender` and `prerender_` let you choose a widget to run on the server
