@@ -20,6 +20,9 @@ project ./. ({ pkgs, ... }: {
   android.displayName = "Obelisk Minimal Example";
   ios.bundleIdentifier = "systems.obsidian.obelisk.examples.minimal";
   ios.bundleName = "Obelisk Minimal Example";
+  packages = {
+    baby-l4 = ./baby-l4;
+  };
   overrides = self: super: let
     gf-udSrc = pkgs.fetchFromGitHub {
       owner = "GrammaticalFramework";
@@ -45,10 +48,20 @@ project ./. ({ pkgs, ... }: {
       ver = "0.13.0.0";
       sha256 = "sha256:1b0p678bh4h1mfbi1v12g9zhnyhgq5q3fiv491ni461v44ypr6bn";
     } {};
-    sbv = self.callHackageDirect {
-      pkg = "sbv";
-      ver = "8.9";
-      sha256 = "sha256:1bmvibjwdn9pbpmslbjx4jlki9djyv2wa8gm33wxfvvrp3fv6hci";
+    # sbv = self.callHackageDirect {
+    #   pkg = "sbv";
+    #   ver = "8.9";
+    #   sha256 = "sha256:1bmvibjwdn9pbpmslbjx4jlki9djyv2wa8gm33wxfvvrp3fv6hci";
+    # } {};
+    # gf-ud = null;
+    gf = self.callHackageDirect {
+      pkg = "gf";
+      ver = "3.11";
+      sha256 = "1z0dv703g9bn0b6ardxvbx7wrvzj2za6zxsmy2yx2m3bzihba113";
     } {};
+    # lsp = null;
+    # lsp-types = null;
+    # lsp-test = null;
+    sbv = null;
   };
 })
