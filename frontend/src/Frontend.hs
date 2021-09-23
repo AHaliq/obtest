@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE PackageImports #-}
 
 module Frontend where
 
@@ -19,7 +20,11 @@ import Reflex.Dom.Core
 import Common.Api
 import Common.Route
 
-import Lib (someStr)
+-- import Typing (checkError)
+-- import "baby-l4" L4Parser (parseNewProgram)
+import L4Parser (parseNewProgram)
+
+-- import Lib (someStr)
 
 -- This runs in a monad that can be run on the client or the server.
 -- To run code in a pure client or pure server context, use one of the
@@ -31,9 +36,13 @@ frontend = Frontend
       elAttr "link" ("href" =: static @"main.css" <> "type" =: "text/css" <> "rel" =: "stylesheet") blank
   , _frontend_body = do
       el "h1" $ text "Welcome to Obelisk!"
-      el "h1" $ text $ T.pack someStr
       el "p" $ text $ T.pack commonStuff
-      
+      t <- inputElement def
+      text " "
+      dynText $ _inputElement_value t
+
+      el "p" $ dynText $ T.pack . show . parseNewProgram "dummyPath" . T.unpack <$> _inputElement_value t
+
       -- `prerender` and `prerender_` let you choose a widget to run on the server
       -- during prerendering and a different widget to run on the client with
       -- JavaScript. The following will generate a `blank` widget on the server and

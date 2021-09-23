@@ -1,3 +1,10 @@
 optional-packages:
   *
+--  frontend,
+--  common,
+--  backend
 write-ghc-environment-files: never
+-- source-repository-package
+--  type: git
+--  location: https://github.com/smucclaw/baby-l4.git
+--  tag: 3619459461b52864e38e6eecf36f0c94603cbc84
