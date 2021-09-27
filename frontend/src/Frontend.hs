@@ -50,7 +50,6 @@ frontend = Frontend
             elClass "div" "content" $ do
               t :: Dynamic t T.Text <- Editor.widget
               elAttr "textArea" ("spellcheck" =: "false") $ parseDyn t
-          script $ static @"codemirror/index.js"
           return ()
   }
 
