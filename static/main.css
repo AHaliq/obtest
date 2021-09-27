@@ -1,3 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto+Mono&family=Slabo+27px&display=swap');
+:root {
+    --bg-col: #2c2828;
+    --fg-col: #8f938f;
+    --fg2-col: #545558;
+}
+
+h1 {
+    font-family: 'Slabo 27px', serif;
+    font-size: 3rem;
+}
+
+html {
+    height: 100%;
+    background-color: var(--bg-col);
+    color: var(--fg-col);
+    font-size: 12px;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    display: flex;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin: 1rem;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex-grow: 1;
+}
+
+.section {
+    font-family: 'Poppins', sans-serif;
+}
+
 p {
-  color: red;  
+    color: red;
+}
+
+textarea {
+    resize: none;
+    font-family: 'Roboto Mono', monospace;
+    border: none;
+    background-color: inherit;
+    color: inherit;
+    padding-left: 1rem;
+    outline: none;
+}
+
+::selection {
+    background-color: var(--fg2-col);
 }

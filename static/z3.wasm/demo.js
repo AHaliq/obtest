@@ -52,23 +52,23 @@ function makeZ3Demo(window, queries, responses, ace) {
         var kind = event.data.kind;
         var payload = event.data.payload;
         switch (kind) {
-        case responses.PROGRESS:
-            disableButton(payload);
-            break;
-        case responses.READY:
-            enableButton();
-            break;
-        case responses.STDOUT:
-            logOutput(payload, "stdout-msg");
-            break;
-        case responses.STDERR:
-            logOutput(payload, "stderr-msg")
-            break;
-        case responses.VERIFICATION_COMPLETE:
-            enableButton();
-            var elapsed = Math.round(window.performance.now() - verification_start);
-            logOutput ("-- Verification complete (" + elapsed + "ms)", "info-msg");
-            break;
+            case responses.PROGRESS:
+                disableButton(payload);
+                break;
+            case responses.READY:
+                enableButton();
+                break;
+            case responses.STDOUT:
+                logOutput(payload, "stdout-msg");
+                break;
+            case responses.STDERR:
+                logOutput(payload, "stderr-msg")
+                break;
+            case responses.VERIFICATION_COMPLETE:
+                enableButton();
+                var elapsed = Math.round(window.performance.now() - verification_start);
+                logOutput("-- Verification complete (" + elapsed + "ms)", "info-msg");
+                break;
         }
     }
 
@@ -93,3 +93,5 @@ function makeZ3Demo(window, queries, responses, ace) {
 
     return { init: init };
 }
+
+console.log("HI FROM STATIC!");

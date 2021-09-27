@@ -30,9 +30,16 @@ project ./. ({ pkgs, ... }: {
       rev = "4b0760e02f9efdb8fbdd47ed2258e9b89f15a14d";
       sha256 = "12y94z3ibrrx0ylwr66i3ibrraj2bzjq97gcnqv71k40z56zk42h";
     };
+    aceSrc = pkgs.fetchFromGitHub {
+      owner = "SlimTim10";
+      repo = "reflex-dom-ace";
+      rev = "5d086c871892b9ebf7c66ad2d4d4f84023bea9b2";
+      sha256 = "0vizlf691s1rbkilhf23c79vkb6pns2x4b6b94szn9wd8mjizxyc";
+    };
   in
   {
     gf-ud = self.callCabal2nix "gf-ud" gf-udSrc {};
+    reflex-dom-ace = self.callCabal2nix "reflex-dom-ace" aceSrc {};
     # lsp = self.callHackageDirect {
     #   pkg = "lsp";
     #   ver = "1.1.1.0";
