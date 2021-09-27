@@ -28,11 +28,6 @@ import L4Parser (parseNewProgram)
 import Reflex.Dom (def)
 import Editor (widget)
 
--- import Lib (someStr)
-
--- This runs in a monad that can be run on the client or the server.
--- To run code in a pure client or pure server context, use one of the
--- `prerender` functions.
 frontend :: Frontend (R FrontendRoute)
 frontend = Frontend
   { _frontend_head = do
@@ -49,57 +44,21 @@ frontend = Frontend
           return ()
   }
 
+-- REFLEX HELPERS
+
 css src = elAttr "link" ("href" =: src <> "type" =: "text/css" <> "rel" =: "stylesheet") blank
 
 script src = elAttr "script" ("type" =: "text/javascript" <> "src" =: src) blank
 
+-- STRING UTILS
+
 parseDyn t = dynText $ T.pack . indent . show . parseNewProgram "" . T.unpack <$> t
-  where
-    indent [] = []
-    indent xs = intercalate "\n" $ map (\(s, i) -> replicate (i*2) ' ' ++ s ) $ break 0 xs
-      where
-        break i [] = [([], i)]
-        break i (x:xs) = 
-          if x `elem` ['(', '{']        then (x:"", i):break (i + 1) xs
-          else if x `elem` [')', '}']   then case break (i - 1) xs of (str, i'):rs -> ("", i):(x:str, i'):rs
-                                        else case break i xs of (str, i):rs -> (x:str, i):rs
-               
-    {-}
-    indent _ [] = []
-    indent i (x:xs) = concat [ns, indent i' xs]
-      where
-        inc = if x `elem` ['(', '{'] then Just True else if x `elem` [')', '}'] then Just False else Nothing
-        i' = i + case inc of
-          Just True -> 1
-          Just False -> -1
-          Nothing -> 0
-        ws = replicate (i' * 2) ' '
-        ns = case inc of
-          Just True -> concat [x:"\n", ws]
-          Just False -> concat ["\n", ws, x:""]
-          Nothing -> x:""
-          -}
 
-{- original scaffolding code
-do
-      el "h1" $ text "L4"
-      t <- inputElement def
-      text " "
-      dynText $ _inputElement_value t
+indent [] = []
+indent xs = intercalate "\n" $ map (\(s, i) -> replicate (i*2) ' ' ++ s ) $ breaki 0 xs
 
-      el "p" $ dynText $ T.pack . show . parseNewProgram "dummyPath" . T.unpack <$> _inputElement_value t
-
-      -- `prerender` and `prerender_` let you choose a widget to run on the server
-      -- during prerendering and a different widget to run on the client with
-      -- JavaScript. The following will generate a `blank` widget on the server and
-      -- print "Hello, World!" on the client.
-      prerender_ blank $ liftJSM $ void $ eval ("console.log('Hello, World!')" :: T.Text)
-
-      elAttr "img" ("src" =: static @"obelisk.jpg") blank
-      el "div" $ do
-        exampleConfig <- getConfig "common/example"
-        case exampleConfig of
-          Nothing -> text "No config file found in config/common/example"
-          Just s -> text $ T.decodeUtf8 s
-      return ()
-      -}
+breaki i [] = [([], i)]
+breaki i (x:xs) = 
+  if x `elem` ['(', '[', '{']         then (x:"", i):breaki (i + 1) xs
+  else if x `elem` [')', ']', '}']    then case breaki (i - 1) xs of (str, i'):rs -> ("", i):(x:str, i'):rs
+                                      else case breaki i xs of (str, i):rs -> (x:str, i):rs
