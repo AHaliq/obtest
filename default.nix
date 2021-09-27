@@ -36,10 +36,17 @@ project ./. ({ pkgs, ... }: {
       rev = "5d086c871892b9ebf7c66ad2d4d4f84023bea9b2";
       sha256 = "0vizlf691s1rbkilhf23c79vkb6pns2x4b6b94szn9wd8mjizxyc";
     };
+    haskellPackages = (import <nixpkgs> {}).haskellPackages;
+    xhtml_3000_2_1Src = haskellPackages.callHackage "xhtml" "3000.2.1" {};
+    haskeline_0_7_3_1Src = haskellPackages.callHackage "haskeline" "0.7.3.1" {};
+    terminfo_0_4_1_1Src = haskellPackages.callHackage "terminfo" "0.4.1.1" {};
   in
   {
     gf-ud = self.callCabal2nix "gf-ud" gf-udSrc {};
     reflex-dom-ace = self.callCabal2nix "reflex-dom-ace" aceSrc {};
+    xhtml_3000_2_1 = xhtml_3000_2_1Src;
+    haskeline_0_7_3_1 = haskeline_0_7_3_1Src;
+    terminfo_0_4_1_1 = terminfo_0_4_1_1Src;
     # lsp = self.callHackageDirect {
     #   pkg = "lsp";
     #   ver = "1.1.1.0";
