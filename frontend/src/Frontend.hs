@@ -39,10 +39,6 @@ frontend = Frontend
       el "title" $ text "Try L4"
       css $ static @"main.css"
       script $ static @"z3.wasm/demo.js"
-      script "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.js"
-      css "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.css"
-      css "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/theme/nord.min.css"
-      script "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/haskell/haskell.min.js"
   , _frontend_body = do
       prerender_ blank $ do
           elClass "div" "container" $ do
@@ -60,18 +56,13 @@ script src = elAttr "script" ("type" =: "text/javascript" <> "src" =: src) blank
 parseDyn t = dynText $ T.pack . indent . show . parseNewProgram "" . T.unpack <$> t
   where
     indent [] = []
-    indent xs = intercalate "\n" $ map (\(s, i) -> replicate (i*2) ' ' ++ s ) $ filter (\(s,_) -> s /= []) $ break 0 xs
+    indent xs = intercalate "\n" $ map (\(s, i) -> replicate (i*2) ' ' ++ s ) $ break 0 xs
       where
-        ixs = ['(', '{']
-        dxs = [')', '}']
         break i [] = [([], i)]
-        break i (x:xs) = case if x `elem` ixs then Just True
-          else if x `elem` dxs then Just False
-          else Nothing of
-            Just True  -> (x:"", i):break (i + 1) xs
-            Just False -> let i' = i - 1 in ("", i):(x:"", i'):break i' xs
-            Nothing -> case break i xs of
-              (str, i):rs -> (x:str, i):rs
+        break i (x:xs) = 
+          if x `elem` ['(', '{']        then (x:"", i):break (i + 1) xs
+          else if x `elem` [')', '}']   then case break (i - 1) xs of (str, i'):rs -> ("", i):(x:str, i'):rs
+                                        else case break i xs of (str, i):rs -> (x:str, i):rs
                
     {-}
     indent _ [] = []
